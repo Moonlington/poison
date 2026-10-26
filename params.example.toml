@@ -49,15 +49,51 @@
 #   code_block_background_color_dark = "#272822"
 
 # ─────────────────────────────────────────────────────────────────────────────
-# SITE B — echoesofflore.com  (same structure, own palette — to be filled in)
+# SITE B — echoesofflore.com  (same structure, blue accent instead of red)
 # ─────────────────────────────────────────────────────────────────────────────
 # [params]
 #   brand = "Echoes of Flore"
 #   brand_image = "/img/logo.png"
-#   description = "..."
+#   tagline = "Games, music and film — the stories that stay with us"
+#   description = "Essays on games, music and film from Flore: what these stories do to us, why they stay, and the ones worth coming back to."
 #   dark_mode = true
-#   theme_color = "..."
-#   theme_color_dark = "..."
-#   link_color = "..."              # must clear 4.5:1 on content_bg_color
-#   link_color_dark = "..."         # must clear 4.5:1 on content_bg_color_dark
-#   # ...remaining keys as above
+#   theme_color = "#FAF9F6"
+#   theme_color_dark = "#121212"
+#
+#   # Sidebar and body colours are identical to site A — only the accent differs.
+#   sidebar_bg_color = "#202020"
+#   sidebar_img_border_color = "#515151"
+#   sidebar_p_color = "#909090"
+#   sidebar_h1_color = "#FFF"
+#   sidebar_a_color = "#FFF"
+#   sidebar_socials_color = "#FFF"
+#   moon_sun_color = "#FFF"
+#   moon_sun_background_color = "#515151"
+#
+#   text_color = "#222"
+#   content_bg_color = "#FAF9F6"
+#   post_title_color = "#303030"
+#   list_color = "#5a5a5a"
+#   # Brand blue is #397BC5, but as text it is 4.14:1 on paper and 4.29:1 on
+#   # #121212 — both under 4.5:1. These are one lightness step either side.
+#   link_color = "#3675bb"          # 4.51:1 on paper
+#   date_color = "#515151"
+#   table_border_color = "#E5E5E5"
+#   table_stripe_color = "#F9F9F9"
+#   code_color = "#bf616a"
+#   code_background_color = "#E5E5E5"
+#   code_block_color = "#fff"
+#   code_block_background_color = "#272822"
+#
+#   text_color_dark = "#eee"
+#   content_bg_color_dark = "#121212"
+#   post_title_color_dark = "#DBE2E9"
+#   list_color_dark = "#9d9d9d"
+#   link_color_dark = "#3e7fc7"     # 4.52:1 on #121212
+#   date_color_dark = "#9a9a9a"
+#   table_border_color_dark = "#515151"
+#   table_stripe_color_dark = "#202020"
+#   code_color_dark = "#ff8b8b"     # 4.82:1 on #393D47
+#   code_background_color_dark = "#393D47"
+#   code_block_color_dark = "#fff"
+#   code_block_background_color_dark = "#272822"
