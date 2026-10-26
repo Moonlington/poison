@@ -1,15 +1,19 @@
-{{ $pag := .Paginate (where .Pages "Type" "posts") }}
-{{ if gt $pag.TotalPages 1 }}
+/* Pagination controls. Uses the paginator the page template already built —
+   the old version re-paginated with a hardcoded "posts" type filter, which both
+   broke any site whose section is not called posts and fought with the caller's
+   own .Paginate call. */
+{{- $pag := .Paginator -}}
+{{- if gt $pag.TotalPages 1 }}
 <hr>
 <div class="footer">
-<nav id="page-nav">
+<nav id="page-nav" aria-label="Pagination">
 
     {{ if $pag.HasPrev }}
     <a href="{{ $pag.Prev.URL }}" rel="prev" class="extend prev">&laquo; Previous{{ T "Prev" }}</a>
     {{ end }}
     {{ range $pag.Pagers }}
     {{ if eq . $pag }}
-    <span class="page-number current">{{ $pag.PageNumber }}</span>
+    <span class="page-number current" aria-current="page">{{ $pag.PageNumber }}</span>
     {{ else }}
     <a href="{{ .URL }}">{{ .PageNumber }}</a>
     {{ end }}
@@ -18,5 +22,6 @@
     {{ if $pag.HasNext }}
     <a href="{{ $pag.Next.URL }}" rel="next" class="extend next">{{ T "Next" }} Next &raquo;</a>
     {{ end }}
+</nav>
 </div>
 {{ end }}

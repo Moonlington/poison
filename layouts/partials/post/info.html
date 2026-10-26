@@ -1,37 +1,46 @@
+{{- /*
+  Post byline: title, author, date, reading time, tags, series, featured image.
+
+  Accepts either a Page (heading level 1, used on the article page) or a dict
+  {"page": Page, "heading": 2} for list contexts, so a home page full of posts
+  does not emit one <h1> per card.
+*/ -}}
+{{- $p := . -}}
+{{- $heading := 1 -}}
+{{- if reflect.IsMap . -}}
+  {{- $p = .page -}}
+  {{- $heading = .heading | default 1 -}}
+{{- end -}}
 <div class="info">
-  <h1 class="post-title">
-    <a href="{{ .Permalink }}">{{ .Title }}</a>
-  </h1>
+  <h{{ $heading }} class="post-title">
+    <a href="{{ $p.Permalink }}">{{ $p.Title }}</a>
+  </h{{ $heading }}>
 
   <div class="headline">
     <div>
-      {{ with .Params.author }}
+      {{ with $p.Params.author }}
         {{ with site.Taxonomies.author.Get . }}
           <span><a href="{{ .Page.RelPermalink }}">{{ .Page.LinkTitle }}</a> - </span>
         {{ else }}
           <span>{{ . }} - </span>
         {{ end }}
       {{ end }}
-      {{ if .Date }}
-      <time datetime="{{ .Date.Format " 2006-01-02T15:04:05Z0700" }}" class="post-date">
-        {{ .Date.Format "January 2, 2006" }}
+      {{ if $p.Date }}
+      <time datetime="{{ $p.Date.Format "2006-01-02T15:04:05Z0700" }}" class="post-date">
+        {{ $p.Date.Format "January 2, 2006" }}
       </time>
       {{ end }}
       <span> - </span>
       <span class="reading-time">
-        {{ if gt .ReadingTime 1 }}
-          {{ .Scratch.Set "readingTime" "mins" }}
-        {{ else }}
-          {{ .Scratch.Set "readingTime" "min" }}
-        {{ end }}
-
-        <span>{{ .ReadingTime }} {{ .Scratch.Get "readingTime" }} read</span>
+        {{- $unit := "mins" -}}
+        {{- if eq $p.ReadingTime 1 }}{{ $unit = "min" }}{{ end }}
+        <span>{{ $p.ReadingTime }} {{ $unit }} read</span>
       </span>
     </div>
 
-    {{ if .Params.tags }}
+    {{ with $p.Params.tags }}
     <ul class="tags">
-      {{ range .Params.tags }}
+      {{ range . }}
       <li class="tag-{{ . }}">
         <a href="{{ "tags/" | absLangURL }}{{ . | urlize }}">{{ . }}</a>
       </li>
@@ -40,16 +49,17 @@
     {{ end }}
   </div>
 
-  {{ $Site := .Site }}
-  {{ if .Params.series }}
+  {{ with $p.Params.series }}
+  {{- $list := . -}}
+  {{- if not (reflect.IsSlice $list) }}{{ $list = slice . }}{{ end }}
   <p class="seriesname">
-    Series: <a href="{{ $Site.BaseURL }}series/{{ .Params.series | urlize }}">{{ .Params.series }}</a>
+    Series: {{ range $i, $s := $list }}{{ if $i }}, {{ end }}<a href="{{ "series/" | absLangURL }}{{ $s | urlize }}">{{ $s }}</a>{{ end }}
   </p>
   {{ end }}
 
-  {{ if .Params.featuredImage }}
+  {{ with $p.Params.featuredImage }}
   <p>
-    <img src="{{.Params.featuredImage}}"><br>
+    <img src="{{ . }}" alt="{{ $p.Title }}"><br>
   </p>
   {{ end }}
 </div>

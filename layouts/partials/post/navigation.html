@@ -1,34 +1,36 @@
 <hr>
 <div class="footer">
-    {{ if .Params.series }}
-    {{ $Site := .Site }}
-    {{ $postTitle := .Title }}
+    {{- $series := .Params.series -}}
+    {{- if $series }}
+    {{- $list := $series -}}
+    {{- if not (reflect.IsSlice $list) }}{{ $list = slice $series }}{{ end }}
+    {{- $postTitle := .Title }}
+    {{- range $list }}
+    {{- $name := . }}
+    {{- $term := site.GetPage (printf "/series/%s" ($name | urlize)) }}
     <p>
-    This is a post in the <b><a href="{{ $Site.BaseURL }}series/{{ .Params.series | urlize }}">{{ .Params.series }}</a></b> series.
-        <br>Other posts in this series:
-        <ul class="series">
-            {{ $seriesUrl := print "series/" (.Params.series | urlize) }}
-            {{ $series := .Site.GetPage $seriesUrl }}
-            {{ range $series.Pages }}
-            <li>
-                {{ .Date | time.Format ":date_long" }} -
-                {{ if ne .Title $postTitle }}
-                    <a href="{{ .RelPermalink }}">{{ .Title }}</a>
-                {{ else }}
-                    {{ .Title }}
-                {{ end }}
-            </li>
-            {{ end }}
-        </ul>
+      This is a post in the <b><a href="{{ "series/" | absLangURL }}{{ $name | urlize }}">{{ $name }}</a></b> series.
+      {{- with $term }}
+      <br>Other posts in this series:
+      <ul class="series">
+        {{- range .Pages }}
+        <li>
+          {{ .Date | time.Format ":date_long" }} -
+          {{ if ne .Title $postTitle }}<a href="{{ .RelPermalink }}">{{ .Title }}</a>{{ else }}{{ .Title }}{{ end }}
+        </li>
+        {{- end }}
+      </ul>
+      {{- end }}
     </p>
-    {{ else }}
-	    {{ if .PrevInSection }}
-            <a class="previous-post" href="{{ .PrevInSection.Permalink }}?ref=footer"><span style="font-weight:bold;">« Previous</span><br>{{ .PrevInSection.Title | truncate 50 "..."}}</a>
-        {{ end }}
-	    {{ if .NextInSection }}
-            <div class="next-post">
-                <a href="{{ .NextInSection.Permalink }}?ref=footer"><span style="font-weight:bold;">Next »</span><br>{{ .NextInSection.Title | truncate 50 "..." }}</a>
-            </div>
-        {{ end }}
-    {{ end }}
+    {{- end }}
+    {{- else }}
+      {{- with .PrevInSection }}
+      <a class="previous-post" href="{{ .Permalink }}?ref=footer"><span style="font-weight:bold;">« Previous</span><br>{{ .Title | truncate 50 "..." }}</a>
+      {{- end }}
+      {{- with .NextInSection }}
+      <div class="next-post">
+        <a href="{{ .Permalink }}?ref=footer"><span style="font-weight:bold;">Next »</span><br>{{ .Title | truncate 50 "..." }}</a>
+      </div>
+      {{- end }}
+    {{- end }}
 </div>
