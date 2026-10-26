@@ -8,7 +8,7 @@
             {{ if eq (len $menu_item.URL) 0 }}
                 <li class="heading">{{ $menu_item.Name }}</li>
             {{ else if $menu_item.External }}
-                <li class="bullet">
+                <li class="bullet external">
                     <a href="{{ $menu_item.URL }}" target="_blank" rel="noopener noreferrer">{{ $menu_item.Name }}</a>
                 </li>
             {{ end }}
@@ -20,13 +20,16 @@
                         <a href="{{ $menu_item.URL }}">{{ $menu_item.Name }}</a>
                     </li>
                     {{ if $menu_item.HasChildren }}
-                        <li class="sub-heading">
-                            {{ $menu_item.Pre }}
-                        </li>
-                        {{ range (first $menu_item.Limit .Pages) }}
-                            <li class="bullet">
-                                <a href="{{ .Permalink }}">{{ .Title }}</a>
+                        {{ $children := first $menu_item.Limit .Pages }}
+                        {{ if gt (len $children) 0 }}
+                            <li class="sub-heading">
+                                {{ $menu_item.Pre }}
                             </li>
+                            {{ range $children }}
+                                <li class="bullet child">
+                                    <a href="{{ .Permalink }}">{{ .Title }}</a>
+                                </li>
+                            {{ end }}
                         {{ end }}
                     {{ end }}
                 {{ end }}
@@ -43,13 +46,16 @@
                                 <a href="{{$menu_item.URL }}">{{ $menu_item.Name }}</a>
                             </li>
                             {{ if $menu_item.HasChildren }}
+                            {{ $children := first $menu_item.Limit .Pages }}
+                            {{ if gt (len $children) 0 }}
                             <li class="sub-heading">
                                 {{ $menu_item.Pre }}
                             </li>
-                            {{ range (first $menu_item.Limit .Pages) }}
-                                <li class="bullet">
+                            {{ range $children }}
+                                <li class="bullet child">
                                     <a href="{{ .Permalink }}">{{ .Title }}</a>
                                 </li>
+                            {{ end }}
                             {{ end }}
                         {{ end }}
                     {{ end }}

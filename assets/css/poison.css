@@ -12,14 +12,20 @@ body.layout-reverse .wrapper {
 }
 
 @media (min-width: 48em) {
-    .bullet {
+    /* Child pages sit under their sub-heading, so they indent further than it.
+       An external menu entry is a sibling of the headings, not a child of
+       whatever happens to precede it in the config, so it stays flush. */
+    .sub-heading {
         margin-left: 1em;
+    }
+    .bullet {
+        margin-left: 1.75em;
         text-decoration-line: underline;
         text-decoration-style: dotted;
         text-decoration-thickness: 1%;
     }
-    .sub-heading {
-        margin-left: 1em;
+    .bullet.external {
+        margin-left: 0;
     }
     .btn-light-dark svg {
         margin: auto;
