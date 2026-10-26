@@ -1,0 +1,39 @@
+#!/bin/sh
+# Conventional Commits gate — https://www.conventionalcommits.org/en/v1.0.0/
+# Install with: git config core.hooksPath .githooks
+#
+# Accepted:  <type>(<scope>)!: <description>
+#   type  ∈ feat fix docs style refactor perf test build ci chore revert
+#   scope optional, lowercase
+#   !     optional, marks a breaking change
+# Merge and revert-generated messages are allowed through untouched.
+
+msg_file="$1"
+subject=$(head -n1 "$msg_file")
+
+# Let git-generated commit messages through.
+case "$subject" in
+  "Merge "*|"Revert "*|"fixup! "*|"squash! "*|"amend! "*) exit 0 ;;
+esac
+
+pattern='^(feat|fix|docs|style|refactor|perf|test|build|ci|chore|revert)(\([a-z0-9._/-]+\))?!?: .+'
+
+if ! printf '%s' "$subject" | grep -Eq "$pattern"; then
+  cat >&2 <<EOF
+✗ Commit message does not follow Conventional Commits.
+
+  got:      $subject
+  expected: <type>(<scope>): <description>
+            e.g. fix(meta): render author tags from params.author
+
+  types: feat fix docs style refactor perf test build ci chore revert
+EOF
+  exit 1
+fi
+
+if [ ${#subject} -gt 72 ]; then
+  echo "✗ Subject is ${#subject} characters; keep it to 72 or fewer." >&2
+  exit 1
+fi
+
+exit 0

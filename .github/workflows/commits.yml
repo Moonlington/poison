@@ -1,0 +1,51 @@
+name: commits
+
+on:
+  pull_request:
+  push:
+    branches: [master, main]
+
+jobs:
+  conventional:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Check commit subjects
+        env:
+          BEFORE: ${{ github.event.before }}
+          SHA: ${{ github.sha }}
+          BASE: ${{ github.event.pull_request.base.sha }}
+        run: |
+          set -eu
+          if [ -n "${BASE:-}" ] && [ "${BASE:-}" != "0000000000000000000000000000000000000000" ]; then
+            range="$BASE..$SHA"
+          elif [ -n "${BEFORE:-}" ] && [ "$BEFORE" != "0000000000000000000000000000000000000000" ]; then
+            range="$BEFORE..$SHA"
+          else
+            range="$(git rev-list --max-parents=0 HEAD)..$SHA"
+          fi
+
+          echo "Checking: $range"
+          fail=0
+          pattern='^(feat|fix|docs|style|refactor|perf|test|build|ci|chore|revert)(\([a-z0-9._/-]+\))?!?: .+'
+          while IFS= read -r subject; do
+            case "$subject" in
+              "Merge "*|"Revert "*|"fixup! "*|"squash! "*|"amend! "*) continue ;;
+            esac
+            if ! printf '%s' "$subject" | grep -Eq "$pattern"; then
+              echo "✗ $subject"
+              fail=1
+            fi
+            if [ ${#subject} -gt 72 ]; then
+              echo "✗ too long (${#subject} chars): $subject"
+              fail=1
+            fi
+          done <<EOF
+          $(git log --format=%s "$range")
+          EOF
+
+          [ "$fail" -eq 0 ] && echo "all commit subjects follow Conventional Commits"
+          exit "$fail"

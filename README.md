@@ -1,5 +1,25 @@
 # Poison
 
+> **This is a maintained fork** of [lukeorth/poison](https://github.com/lukeorth/poison).
+> Upstream last moved in September 2024. This fork fixes the heading structure,
+> the metadata layer (descriptions, article tags, author), adds JSON-LD and a
+> `robots.txt` template, and handles `series` as a proper taxonomy.
+> See [THEMING.md](THEMING.md) for the parameter contract and the list of
+> changes that are not backwards compatible.
+> First release: `v1.0.0`. Requires Hugo 0.165.0 or later.
+>
+> ## Working on this fork
+>
+> ```bash
+> git config core.hooksPath .githooks   # conventional commit messages
+> python3 scripts/contrast.py           # palette check before shipping a colour
+> cd exampleSite && ln -sfn ../.. themes/poison && hugo server
+> ```
+>
+> Commit subjects follow [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/):
+> `<type>(<scope>): <description>`, subject ≤ 72 characters. Both the local
+> `commit-msg` hook and the `commits` CI workflow enforce it.
+
 ![Poison screenshot](https://raw.githubusercontent.com/lukeorth/poison/master/images/screenshot.png)
 
 ### DEMO - https://poison.lukeorth.com/
