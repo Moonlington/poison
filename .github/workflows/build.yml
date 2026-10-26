@@ -1,0 +1,43 @@
+name: build
+
+on:
+  push:
+    branches: [master, main]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  example-site:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: recursive
+
+      - name: Setup Hugo
+        uses: peaceiris/actions-hugo@v3
+        with:
+          hugo-version: '0.165.0'
+          extended: true
+
+      - name: Link theme into the example site
+        run: |
+          mkdir -p exampleSite/themes
+          ln -sfn ../.. exampleSite/themes/poison
+
+      - name: Build example site
+        run: cd exampleSite && hugo --minify --gc --panicOnWarning
+
+      - name: Assert expected output
+        run: |
+          set -eu
+          test -f exampleSite/public/index.html
+          test -f exampleSite/public/robots.txt
+          test -f exampleSite/public/sitemap.xml
+          # structured data present on an article page
+          grep -q 'application/ld+json' exampleSite/public/posts/hello-world/index.html
+          # exactly one H1 per document
+          for f in exampleSite/public/index.html exampleSite/public/posts/hello-world/index.html; do
+            test "$(grep -o '<h1' "$f" | wc -l)" -eq 1 || { echo "H1 count wrong in $f"; exit 1; }
+          done
+          echo "example site ok"

@@ -1,0 +1,63 @@
+# Two palettes, two sites, one theme.
+# Copy ONE block into your site's hugo.toml under [params] and edit the hex values.
+# Check both schemes with: python3 scripts/contrast.py
+
+# ─────────────────────────────────────────────────────────────────────────────
+# SITE A — tabletopflore.com  (dark sidebar, warm paper, deep red)
+# ─────────────────────────────────────────────────────────────────────────────
+# [params]
+#   brand = "Flore's Insignificant Thoughts"
+#   brand_image = "/img/logo.png"
+#   description = "Musings about TTRPGs and Worldbuilding"
+#   dark_mode = true
+#   theme_color = "#FAF9F6"
+#   theme_color_dark = "#121212"
+#
+#   sidebar_bg_color = "#202020"
+#   sidebar_img_border_color = "#515151"
+#   sidebar_p_color = "#909090"
+#   sidebar_h1_color = "#FFF"
+#   sidebar_a_color = "#FFF"
+#   sidebar_socials_color = "#FFF"
+#   moon_sun_color = "#FFF"
+#   moon_sun_background_color = "#515151"
+#
+#   text_color = "#222"
+#   content_bg_color = "#FAF9F6"
+#   post_title_color = "#303030"
+#   list_color = "#5a5a5a"
+#   link_color = "#d81a1a"          # 4.89:1 on paper (upstream #f42020 was 3.93:1)
+#   date_color = "#515151"
+#   table_border_color = "#E5E5E5"
+#   table_stripe_color = "#F9F9F9"
+#   code_color = "#bf616a"
+#   code_background_color = "#E5E5E5"
+#   code_block_color = "#fff"
+#   code_block_background_color = "#272822"
+#
+#   text_color_dark = "#eee"
+#   content_bg_color_dark = "#121212"
+#   post_title_color_dark = "#DBE2E9"
+#   list_color_dark = "#9d9d9d"
+#   link_color_dark = "#f42020"     # 4.53:1 on #121212
+#   date_color_dark = "#9a9a9a"
+#   table_border_color_dark = "#515151"
+#   table_stripe_color_dark = "#202020"
+#   code_color_dark = "#ff8b8b"     # 4.82:1 on #393D47 (upstream #ff7f7f was 4.45:1)
+#   code_background_color_dark = "#393D47"
+#   code_block_color_dark = "#fff"
+#   code_block_background_color_dark = "#272822"
+
+# ─────────────────────────────────────────────────────────────────────────────
+# SITE B — echoesofflore.com  (same structure, own palette — to be filled in)
+# ─────────────────────────────────────────────────────────────────────────────
+# [params]
+#   brand = "Echoes of Flore"
+#   brand_image = "/img/logo.png"
+#   description = "..."
+#   dark_mode = true
+#   theme_color = "..."
+#   theme_color_dark = "..."
+#   link_color = "..."              # must clear 4.5:1 on content_bg_color
+#   link_color_dark = "..."         # must clear 4.5:1 on content_bg_color_dark
+#   # ...remaining keys as above

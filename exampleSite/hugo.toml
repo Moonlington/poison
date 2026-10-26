@@ -1,0 +1,35 @@
+baseURL = "https://example.org/"
+title = "Poison theme example"
+locale = "en-us"
+theme = "poison"
+enableRobotsTXT = true
+
+[pagination]
+  pagerSize = 3
+
+[taxonomies]
+  tag = "tags"
+  series = "series"
+
+[params]
+  brand = "Poison"
+  description = "Example site used to verify the theme builds and renders correctly."
+  dark_mode = true
+  front_page_content = ["posts"]
+  rss_icon = true
+
+  # Colour knobs — see THEMING.md. Omit any of them to keep the theme default.
+  theme_color = "#FAF9F6"
+  theme_color_dark = "#121212"
+  link_color = "#d81a1a"
+  link_color_dark = "#f42020"
+
+  github_url = "https://github.com/Moonlington/poison"
+
+  menu = [
+    {Name = "About", URL = "/about/", HasChildren = false},
+    {Name = "Posts", URL = "/posts/", Pre = "Recent posts", HasChildren = true, Limit = 3},
+  ]
+
+  [params.author]
+    name = "Example Author"
