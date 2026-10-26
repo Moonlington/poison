@@ -1,7 +1,7 @@
-/* Pagination controls. Uses the paginator the page template already built —
-   the old version re-paginated with a hardcoded "posts" type filter, which both
-   broke any site whose section is not called posts and fought with the caller's
-   own .Paginate call. */
+{{/* Pagination controls. Uses the paginator the page template already built —
+     the old version re-paginated with a hardcoded "posts" type filter, which
+     both broke any site whose section is not called posts and fought with the
+     caller's own .Paginate call. */}}
 {{- $pag := .Paginator -}}
 {{- if gt $pag.TotalPages 1 }}
 <hr>

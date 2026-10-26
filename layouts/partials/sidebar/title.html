@@ -14,7 +14,7 @@
     {{ if $isHome }}<h1 class="brand">{{ else }}<div class="brand">{{ end }}
         {{ with $logo }}
             <a href="{{ site.BaseURL }}">
-                <img src="{{ . }}" alt="{{ $brand | default site.Title }}">
+                <img src="{{ . }}" alt="{{ if $brand }}{{ else }}{{ site.Title }}{{ end }}">
             </a>
         {{ end }}
         {{ with $brand }}
