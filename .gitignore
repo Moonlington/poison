@@ -1,0 +1,5 @@
+# Hugo build output — never commit generated sites
+public/
+exampleSite/public/
+resources/
+.hugo_build.lock
