@@ -5,9 +5,16 @@
 */ -}}
 {{- $brand := site.Params.brand | default site.Title -}}
 {{- $author := site.Params.author.name | default $brand -}}
+{{- /* Profile links Google can reconcile against your other properties. */ -}}
+{{- $socials := slice -}}
+{{- range slice "x_url" "twitter_url" "bluesky_url" "github_url" "mastodon_url" "linkedin_url" "youtube_url" "instagram_url" -}}
+  {{- with (index site.Params .) }}{{ $socials = $socials | append . }}{{ end -}}
+{{- end -}}
 {{- if .IsPage -}}
   {{- $author = .Params.author | default $author -}}
   {{- $desc := .Description | default (.Summary | plainify) | chomp | truncate 200 "" -}}
+  {{- $person := dict "@type" "Person" "name" $author "url" site.BaseURL -}}
+  {{- if $socials }}{{ $person = merge $person (dict "sameAs" $socials) }}{{ end -}}
   {{- $schema := dict
       "@context" "https://schema.org"
       "@type" "BlogPosting"
@@ -17,10 +24,14 @@
       "dateModified" (.Lastmod.Format "2006-01-02T15:04:05Z07:00")
       "inLanguage" site.Language.Locale
       "mainEntityOfPage" (dict "@type" "WebPage" "@id" .Permalink)
-      "author" (dict "@type" "Person" "name" $author "url" site.BaseURL)
+      "author" $person
       "publisher" (dict "@type" "Organization" "name" $brand)
   -}}
-  {{- $img := .Params.image | default site.Params.og_image -}}
+  {{- $img := .Params.image -}}
+  {{- if not $img -}}
+    {{- with .Params.images }}{{ if gt (len .) 0 }}{{ $img = index . 0 }}{{ end }}{{ end -}}
+  {{- end -}}
+  {{- if not $img }}{{ $img = site.Params.og_image }}{{ end -}}
   {{- with $img }}{{ $schema = merge $schema (dict "image" (. | absURL)) }}{{ end -}}
   <script type="application/ld+json">{{ $schema | jsonify | safeJS }}</script>
 {{- else if .IsHome -}}

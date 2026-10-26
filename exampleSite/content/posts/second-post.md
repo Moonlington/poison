@@ -4,6 +4,7 @@ date: 2026-02-11
 draft: false
 description: "Enough posts to exercise the list template, the year grouping and the paginator."
 tags: ["example", "theme"]
+images: ["/img/og.png"]
 ---
 
 Enough posts to exercise the list template, the year grouping and the paginator.

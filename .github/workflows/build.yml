@@ -48,4 +48,11 @@ jobs:
             grep -Eq '<(h1|div) class="?brand"?' "$f" || { echo "no brand element in $f"; exit 1; }
             grep -q 'class=brand-title' "$f" || { echo "no brand text in $f"; exit 1; }
           done
+          # Open Graph requires an absolute image URL; a relative one silently
+          # breaks cards on some consumers. Every page must advertise one.
+          for f in exampleSite/public/index.html exampleSite/public/posts/hello-world/index.html; do
+            grep -Eq 'property="og:image" content="https://' "$f" || { echo "og:image not absolute in $f"; exit 1; }
+            # hugo --minify drops quotes from simple attribute names
+            grep -Eq 'name="?twitter:card"? content="summary' "$f" || { echo "no twitter:card in $f"; exit 1; }
+          done
           echo "example site ok"
