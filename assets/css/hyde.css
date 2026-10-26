@@ -203,6 +203,18 @@ a.sidebar-nav-item:focus {
   margin-bottom: 0;
 }
 
+/* Brand typography is owned here rather than by each site's custom.css, so every
+   site gets the same type and there is no second copy to drift. The size is
+   bounded by the 14rem column: "Echoes of Flore" costs 7.07px of width per px of
+   font-size, so 1.9em needs 268px of the 280px available on desktop and 215px of
+   224px on the narrow breakpoint. Anything above 1.98em wraps to two lines. */
+.sidebar-about .brand {
+    font-size: 1.9em;
+    line-height: 1.5;
+    font-family: "Fira Sans", sans-serif;
+    font-weight: bold;
+}
+
 /* Off the home page the brand wrapper is a div: the article title owns the
    page's only H1. Give it the size the nested <h1> used to supply. */
 div.brand {
