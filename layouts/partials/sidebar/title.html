@@ -24,6 +24,6 @@
         {{ end }}
     {{ if $isHome }}</h1>{{ else }}</div>{{ end }}
     <p class="lead">
-    {{ with .Site.Params.description }}{{ . | safeHTML }}{{ end }}
+    {{ with (.Site.Params.tagline | default .Site.Params.description) }}{{ . | safeHTML }}{{ end }}
     </p>
 </div>
