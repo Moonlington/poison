@@ -2,7 +2,7 @@
 <h1 class="title">{{ .Title }}</h1>
 <ul class="entries">
     {{ range .Pages.GroupByDate "2006" }}
-        <h3 style="text-align: center;">{{ .Key }}</h3>
+        <h2 class="year">{{ .Key }}</h2>
         {{ range .Pages }}
             <li>
                 <span class="title">

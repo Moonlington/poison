@@ -1,20 +1,24 @@
 <div class="sidebar-about">
-    <h1 class="brand">
+    {{/* Upstream nested <h1> inside <h1> here, which produced three H1s per page
+         and invalid markup. Exactly one H1 per document: the brand on the home
+         page, the article title everywhere else. */}}
+    {{ $isHome := .IsHome }}
+    <{{ if $isHome }}h1{{ else }}div{{ end }} class="brand">
         {{ if .Site.Params.remote_brand_image }}
             <a href="{{ .Site.BaseURL }}">
-                <img src="{{ .Site.Params.remote_brand_image }}" alt="brand image">
+                <img src="{{ .Site.Params.remote_brand_image }}" alt="{{ site.Params.brand | default site.Title }}">
             </a>
         {{ else if .Site.Params.brand_image }}
             <a href="{{ .Site.BaseURL }}">
-                <img src="{{ .Site.Params.brand_image }}" alt="brand image">
+                <img src="{{ .Site.Params.brand_image }}" alt="{{ site.Params.brand | default site.Title }}">
             </a>
         {{ end }}
         {{ if .Site.Params.brand }}
             <a href="{{ .Site.BaseURL }}">
-                <h1>{{ .Site.Params.brand }}</h1>
+                {{ if $isHome }}<h1>{{ .Site.Params.brand }}</h1>{{ else }}<span class="brand-title">{{ .Site.Params.brand }}</span>{{ end }}
             </a>
         {{ end }}
-    </h1>
+    </{{ if $isHome }}h1{{ else }}div{{ end }}>
     <p class="lead">
     {{ with .Site.Params.description }}{{. | safeHTML}}{{end}}
     </p>

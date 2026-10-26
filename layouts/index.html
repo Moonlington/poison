@@ -3,7 +3,7 @@
     {{ $frontPageTypes := default (slice "posts") .Site.Params.front_page_content }}
     {{ range (.Paginate (where .Site.RegularPages "Type" "in" $frontPageTypes)).Pages }}
     <article class="post">
-        {{ partial "post/info.html" . }}
+        {{ partial "post/info.html" (dict "page" . "heading" 2) }}
         {{ if or (.Site.Params.noSummary) (.Params.noSummary) }}
         {{ .Content }}
         {{ else }}
