@@ -19,6 +19,19 @@
 {{/* Personal/custom scripts for codeblocks */}}
 {{ $js = $js | append (resources.Get "js/codeblock.js") }}
 
+{{/* Optional image zoom: vendored medium-zoom, no CDN */}}
+{{ if .Site.Params.image_zoom }}
+<script>
+  window.poisonZoom = {
+    background: {{ .Site.Params.image_zoom_background | default "rgba(0, 0, 0, 0.9)" }},
+    margin: {{ .Site.Params.image_zoom_margin | default 20 }}
+  };
+</script>
+{{ $js = $js | append
+      (resources.Get "js/lib/medium-zoom.min.js")
+      (resources.Get "js/zoom.js") }}
+{{ end }}
+
 {{ $js_bundle := $js | resources.Concat "js/bundle.js" | minify | fingerprint }}
 
 <script defer language="javascript" type="text/javascript" src="{{ $js_bundle.RelPermalink }}"></script>

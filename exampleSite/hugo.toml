@@ -17,6 +17,8 @@ enableRobotsTXT = true
   dark_mode = true
   front_page_content = ["posts"]
   rss_icon = true
+  image_zoom = true
+  image_zoom_background = "rgba(0, 0, 0, 0.9)"
 
   # Colour knobs — see THEMING.md. Omit any of them to keep the theme default.
   theme_color = "#FAF9F6"

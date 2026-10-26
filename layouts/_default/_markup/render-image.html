@@ -1,0 +1,21 @@
+{{- /*
+  Image render hook.
+
+  Renders a <figure>/<figcaption> when the markdown image has a title, and adds
+  the class medium-zoom targets. A class rather than an id: an id used on every
+  image is invalid HTML and multiple images are the normal case.
+*/ -}}
+{{- $zoom := site.Params.image_zoom | default false -}}
+{{- $class := cond $zoom "zoomable" "" -}}
+{{- with .Title -}}
+<figure class="figure">
+  <p class="md__image">
+    <img class="{{ $class }}" src="{{ $.Destination | safeURL }}" alt="{{ $.Text }}" loading="lazy">
+  </p>
+  <figcaption class="figcaption">{{ . }}</figcaption>
+</figure>
+{{- else -}}
+<p class="md__image">
+  <img class="{{ $class }}" src="{{ .Destination | safeURL }}" alt="{{ .Text }}" loading="lazy">
+</p>
+{{- end -}}

@@ -17,3 +17,7 @@ fmt.Println("hello")
 ```
 
 > A blockquote, because the theme styles them and it should keep doing so.
+
+![A captioned image](/img/sample.svg "The caption renders as a figcaption")
+
+![No caption here](/img/sample.svg)

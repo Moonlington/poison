@@ -114,6 +114,22 @@ Socials are `*_url` parameters (`github_url`, `mastodon_url`, `bluesky_url`,
   the default `index,follow`.
 - `noindex_paths` in params adds `Disallow:` lines to the generated `robots.txt`.
 
+## Image zoom
+
+Off by default. Enable per site:
+
+```toml
+[params]
+  image_zoom = true
+  image_zoom_background = "rgba(0, 0, 0, 0.9)"  # overlay colour
+  image_zoom_margin = 20                        # px around the image when zoomed
+```
+
+medium-zoom 1.1.0 is vendored at `assets/js/lib/medium-zoom.min.js` (MIT), so no
+third-party request is made — the bundle ships it inline. A markdown image with a
+title renders as `<figure>` + `<figcaption>`; every image gets `class="zoomable"`.
+With `image_zoom` unset, neither the class nor the script is emitted.
+
 ## Typography
 
 Base CSS lives in `assets/css/hyde.css`. A site overrides it with its own
