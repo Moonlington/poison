@@ -40,4 +40,12 @@ jobs:
           for f in exampleSite/public/index.html exampleSite/public/posts/hello-world/index.html; do
             test "$(grep -o '<h1' "$f" | wc -l)" -eq 1 || { echo "H1 count wrong in $f"; exit 1; }
           done
+          # the sidebar brand is real markup, not escaped text: a template that
+          # builds a tag name from an action (<{{ if }}h1{{ end }}>) is escaped
+          # by html/template and renders visibly. Substring checks miss this.
+          for f in exampleSite/public/index.html exampleSite/public/posts/hello-world/index.html; do
+            grep -q '&lt;' "$f" && { echo "escaped markup in $f"; exit 1; }
+            grep -Eq '<(h1|div) class="?brand"?' "$f" || { echo "no brand element in $f"; exit 1; }
+            grep -q 'class=brand-title' "$f" || { echo "no brand text in $f"; exit 1; }
+          done
           echo "example site ok"

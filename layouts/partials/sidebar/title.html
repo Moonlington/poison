@@ -1,25 +1,29 @@
 <div class="sidebar-about">
-    {{/* Upstream nested <h1> inside <h1> here, which produced three H1s per page
-         and invalid markup. Exactly one H1 per document: the brand on the home
-         page, the article title everywhere else. */}}
+    {{/* Upstream nested <h1> inside <h1> here: three H1s per page and invalid
+         markup. Now the wrapper is the H1 on the home page and a plain div
+         everywhere else, so each document has exactly one H1 (the article
+         title owns it off the home page).
+
+         Each branch emits a complete literal tag on purpose: building a tag
+         name from an action (<{{ if }}h1{{ end }}>) makes Go's html/template
+         treat the angle bracket as text and escape the whole tag into
+         &lt;h1 ...&gt;, which then renders visibly as escaped markup. */}}
     {{ $isHome := .IsHome }}
-    <{{ if $isHome }}h1{{ else }}div{{ end }} class="brand">
-        {{ if .Site.Params.remote_brand_image }}
-            <a href="{{ .Site.BaseURL }}">
-                <img src="{{ .Site.Params.remote_brand_image }}" alt="{{ site.Params.brand | default site.Title }}">
-            </a>
-        {{ else if .Site.Params.brand_image }}
-            <a href="{{ .Site.BaseURL }}">
-                <img src="{{ .Site.Params.brand_image }}" alt="{{ site.Params.brand | default site.Title }}">
+    {{ $brand := .Site.Params.brand }}
+    {{ $logo := .Site.Params.remote_brand_image | default .Site.Params.brand_image }}
+    {{ if $isHome }}<h1 class="brand">{{ else }}<div class="brand">{{ end }}
+        {{ with $logo }}
+            <a href="{{ site.BaseURL }}">
+                <img src="{{ . }}" alt="{{ $brand | default site.Title }}">
             </a>
         {{ end }}
-        {{ if .Site.Params.brand }}
-            <a href="{{ .Site.BaseURL }}">
-                {{ if $isHome }}<h1>{{ .Site.Params.brand }}</h1>{{ else }}<span class="brand-title">{{ .Site.Params.brand }}</span>{{ end }}
+        {{ with $brand }}
+            <a href="{{ site.BaseURL }}">
+                <span class="brand-title">{{ . }}</span>
             </a>
         {{ end }}
-    </{{ if $isHome }}h1{{ else }}div{{ end }}>
+    {{ if $isHome }}</h1>{{ else }}</div>{{ end }}
     <p class="lead">
-    {{ with .Site.Params.description }}{{. | safeHTML}}{{end}}
+    {{ with .Site.Params.description }}{{ . | safeHTML }}{{ end }}
     </p>
 </div>

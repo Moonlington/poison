@@ -203,14 +203,23 @@ a.sidebar-nav-item:focus {
   margin-bottom: 0;
 }
 
-/* Non-home pages render the brand text as a span (the article title owns the
-   page's only H1). Match the typography the inner <h1> used to inherit. */
+/* Off the home page the brand wrapper is a div: the article title owns the
+   page's only H1. Give it the size the nested <h1> used to supply. */
+div.brand {
+  font-size: 1.5em;
+  font-weight: 300;
+  margin-top: 0;
+  color: var(--sidebar-h1-color);
+}
+
+/* The brand text always inherits from its wrapper, so a site that styles
+   `.sidebar-about .brand` gets identical type on every page instead of
+   compounding em sizes. */
 .brand-title {
   display: block;
-  color: var(--sidebar-h1-color);
-  margin-top: 0;
-  font-weight: 300;
-  font-size: 1.5em;
+  color: inherit;
+  font-weight: inherit;
+  font-size: inherit;
 }
 
 /*
