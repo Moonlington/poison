@@ -20,12 +20,15 @@ jobs:
           BASE: ${{ github.event.pull_request.base.sha }}
         run: |
           set -eu
-          if [ -n "${BASE:-}" ] && [ "${BASE:-}" != "0000000000000000000000000000000000000000" ]; then
+          zero="0000000000000000000000000000000000000000"
+          if [ -n "${BASE:-}" ] && [ "${BASE:-}" != "$zero" ] && git cat-file -e "${BASE}^{commit}" 2>/dev/null; then
             range="$BASE..$SHA"
-          elif [ -n "${BEFORE:-}" ] && [ "$BEFORE" != "0000000000000000000000000000000000000000" ]; then
+          elif [ -n "${BEFORE:-}" ] && [ "$BEFORE" != "$zero" ] && git cat-file -e "${BEFORE}^{commit}" 2>/dev/null; then
             range="$BEFORE..$SHA"
           else
-            range="$(git rev-list --max-parents=0 HEAD)..$SHA"
+            # New branch, or a force push whose previous head is no longer
+            # reachable and therefore not fetched: check the tip commit only.
+            range="$SHA~1..$SHA"
           fi
 
           echo "Checking: $range"
