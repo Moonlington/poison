@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml"{{with .Site.LanguageCode}} xml:lang="{{.}}" lang="{{.}}"{{end}}>
+<html xmlns="http://www.w3.org/1999/xhtml"{{ with site.Language.Locale }} xml:lang="{{ . }}" lang="{{ . }}"{{ end }}>
 <head>
     {{ partial "head/scripts.html" . }}
 
@@ -10,10 +10,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <!-- favicon -->
-    <link rel="icon" href={{ .Site.Params.favicon | default "/favicon.png" }}>
+    <link rel="icon" href="{{ .Site.Params.favicon | default "/favicon.png" }}">
 
     <!-- META -->
     {{ partial "head/meta.html" . }}
+
+    <!-- Structured data -->
+    {{ partial "head/schema.html" . }}
 
     <!-- CSS stylesheets -->
     {{ partial "head/stylesheets.html" . }}

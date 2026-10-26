@@ -1,0 +1,9 @@
+User-agent: *
+Allow: /
+{{- with site.Params.noindex_paths }}
+{{- range . }}
+Disallow: {{ . }}
+{{- end }}
+{{- end }}
+
+Sitemap: {{ "sitemap.xml" | absURL }}
