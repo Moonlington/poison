@@ -21,7 +21,8 @@
 
 {{- $description := "" -}}
 {{- if .IsHome -}}
-  {{- $description = site.Params.description | default site.Params.Description -}}
+  {{- /* front matter wins, so the home copy lives with the home content */ -}}
+  {{- $description = .Description | default (site.Params.description | default site.Params.Description) -}}
 {{- else if .IsPage -}}
   {{- $description = .Description | default (.Summary | plainify) -}}
 {{- else -}}
@@ -118,8 +119,15 @@
 
 <!-- Search Engine Crawler Tags -->
 {{- if ne .Kind "404" }}
-<meta name="robots" content="{{ .Params.robots | default "index,follow" }}" />
-<meta name="googlebot" content="{{ .Params.robots | default "index,follow" }}" />
+{{- /* Tag archives are thin, auto-generated and often duplicates of one another;
+       with noindex_tags on they stay crawlable and linked but leave the index.
+       Series terms are deliberately excluded: those are real ordered clusters. */ -}}
+{{- $robots := .Params.robots | default "index,follow" -}}
+{{- if and (site.Params.noindex_tags | default false) (in (slice "term" "taxonomy") .Kind) (eq .Type "tags") -}}
+  {{- $robots = "noindex, follow" -}}
+{{- end }}
+<meta name="robots" content="{{ $robots }}" />
+<meta name="googlebot" content="{{ $robots }}" />
 {{- else }}
 <meta name="robots" content="noindex" />
 {{- end }}
